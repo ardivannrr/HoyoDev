@@ -1,44 +1,42 @@
-// Navbar
-const navbar = document.querySelector(".navbar");
-const menu = document.querySelector("#menu");
+// Gallery
+let nextDom = document.getElementById("next");
+let prevDom = document.getElementById("prev");
 
-menu.onclick = () => {
-  navbar.classList.toggle("active");
+let carouselDom = document.querySelector(".carousel");
+let SliderDom = carouselDom.querySelector(".carousel .list");
+let thumbnailBorderDom = document.querySelector(".carousel .thumbnail");
+let thumbnailItemsDom = thumbnailBorderDom.querySelectorAll(".item");
+let timeDom = document.querySelector(".carousel .time");
+
+thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
+let timeRunning = 500;
+nextDom.onclick = function () {
+  showSlider("next");
 };
-
-document.addEventListener("click", function (e) {
-  if (!menu.contains(e.target) && !navbar.contains(e.target)) {
-    navbar.classList.remove("active");
+prevDom.onclick = function () {
+  showSlider("prev");
+};
+let runTimeOut;
+function showSlider(type) {
+  let SliderItemsDom = SliderDom.querySelectorAll(".carousel .list .item");
+  let thumbnailItemsDom = document.querySelectorAll(
+    ".carousel .thumbnail .item"
+  );
+  if (type === "next") {
+    SliderDom.appendChild(SliderItemsDom[0]);
+    thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
+    carouselDom.classList.add("next");
+  } else {
+    SliderDom.prepend(SliderItemsDom[SliderItemsDom.length - 1]);
+    thumbnailBorderDom.prepend(thumbnailItemsDom[thumbnailItemsDom.length - 1]);
+    carouselDom.classList.add("prev");
   }
-});
-
-// Swiper JS
-new Swiper(".card-wrapper", {
-  // Optional parameters
-  loop: true,
-  spaceBetween: 30,
-  // If we need pagination
-  pagination: {
-    el: ".swiper-pagination",
-  },
-
-  // Navigation arrows
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-
-  breakpoints: {
-    0: {
-      slidesPerView: 1
-    },
-    768: {
-      slidesPerView: 2
-    }, 1024: {
-      slidesPerView: 3
-    },
-  }
-});
+  clearTimeout(runTimeOut);
+  runTimeOut = setTimeout(() => {
+    carouselDom.classList.remove("next");
+    carouselDom.classList.remove("prev");
+  }, timeRunning);
+}
 
 // Navbar Scroll Bergulir
 // window.onscroll = function () {
